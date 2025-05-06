@@ -27,6 +27,8 @@ jobs:
         pip install -r requirements.txt
         pip install gunicorn  # Add only if needed and not in requirements.txt
 
-    - name: Restart Python Application
+    - name: Run Python Application
       run: |
-        ./restart.sh
+        python todo_app.py  # Replace 'app.py' with your entry point
+
+   
