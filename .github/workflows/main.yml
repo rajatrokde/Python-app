@@ -1,16 +1,16 @@
-name: Run Python App
+name: Deploy and Run Python App
 
 on:
   push:
     branches:
-      - main  # or your desired branch
+      - main
   pull_request:
     branches:
-      - main  # or your desired branch
+      - main
 
 jobs:
-  run_python_app:
-    runs-on: [self-hosted, linux]  # Use 'windows' or 'linux' depending on your runner environment
+  deploy_and_run:
+    runs-on: [self-hosted, linux]
 
     steps:
     - name: Checkout Repository
@@ -19,14 +19,14 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.12'  # Specify the Python version
+        python-version: '3.12'
 
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt 
-        pip install gunicorn  # Assuming you have a requirements.txt for dependencies
+        pip install -r requirements.txt
+        pip install gunicorn  # Add only if needed and not in requirements.txt
 
-    - name: Run Python Application
+    - name: Restart Python Application
       run: |
-        python todo_app.py  # Replace 'app.py' with your entry point
+        ./restart.sh
