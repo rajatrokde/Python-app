@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+    <title>ToDo App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .done { text-decoration: line-through; color: gray; }
+    </style>
+</head>
+<body>
+    <h1>My ToDo List</h1>
+
+    <form action="/add" method="post">
+        <input type="text" name="content" placeholder="New task" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <ul>
+        {% for task in tasks %}
+            <li class="{{ 'done' if task.done }}">
+                {{ task.content }}
+                {% if not task.done %}
+                    <a href="/done/{{ loop.index0 }}">✔️</a>
+                {% endif %}
+                <a href="/delete/{{ loop.index0 }}">❌</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
