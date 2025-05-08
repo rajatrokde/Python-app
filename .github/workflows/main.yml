@@ -29,4 +29,5 @@ jobs:
 
     - name: Run Python Application
       run: |
-        python todo_app.py  # Replace 'app.py' with your entry point
+        python todo_app.py &
+        sleep 10
