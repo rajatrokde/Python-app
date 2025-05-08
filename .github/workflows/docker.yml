@@ -21,9 +21,9 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
        - name: Build and push Docker image
-        run: |
-          IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
-          docker build -t $IMAGE_NAME .
-          docker push $IMAGE_NAME
+         run: |
+           IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+           docker build -t $IMAGE_NAME .
+           docker push $IMAGE_NAME
 
       
