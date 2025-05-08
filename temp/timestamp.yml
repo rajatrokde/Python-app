@@ -30,9 +30,3 @@ jobs:
           docker build -t $IMAGE_NAME .
           docker push $IMAGE_NAME
 
-      - name: Deploy container
-        run: |
-          IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:${{ env.TAG }}
-          docker stop mycontainer || true
-          docker rm mycontainer || true
-          docker run -d -p 80:80 --name website $IMAGE_NAME
