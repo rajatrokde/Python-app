@@ -5,7 +5,7 @@ pipeline {
         stage("Clone Code"){
             steps {
                 echo "Cloning the code"
-                git url:"https://github.com/rajatrokde/My-portfolio.git", branch: "master"
+                git url:"https://github.com/rajatrokde/Python-app.git", branch: "main"
             }
         
         }
