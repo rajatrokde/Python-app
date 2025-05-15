@@ -32,7 +32,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: "DockerHubcred", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
                     sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${env.dockerHubUser}:${IMAGE_TAG} "
                     sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
-                    sh "docker push ${env.dockerHubUser}:${IMAGE_TAG}"
+                    sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
                     
                 }
             }
