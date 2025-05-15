@@ -2,7 +2,7 @@ pipeline {
     agent any 
     environment {
         IMAGE_NAME = "rajatrokde9/python-app" // Replace with your actual DockerHub repo name
-        IMAGE_TAG = "v1"
+        IMAGE_TAG = "v2"
     }
    stages{
         stage("Clone Code"){
