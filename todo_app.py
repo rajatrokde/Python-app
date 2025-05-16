@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
-
-# In-memory task list
 tasks = []
 
 @app.route('/')
@@ -22,7 +20,6 @@ def done(task_id):
         tasks[task_id]['done'] = True
     return redirect(url_for('index'))
 
-
 @app.route('/delete/<int:task_id>')
 def delete(task_id):
     if 0 <= task_id < len(tasks):
@@ -30,4 +27,4 @@ def delete(task_id):
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
