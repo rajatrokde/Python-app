@@ -16,15 +16,14 @@ pipeline {
             steps {
                 echo "Building the image"
                 // sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
-                bat "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                bat "docker build -t ${IMAGE_NAME }:${IMAGE_TAG} ."
             }
         }
         stage("Deploy"){
             steps {
                 echo "Deploying the container"
-                bat "docker-compose down && docker-compose up -d"
-                
-            }
+                bat "docker-compose down -v && docker-compose build && docker-compose up -d"
+                  }
         }
         
         stage("Push to Docker Hub"){
