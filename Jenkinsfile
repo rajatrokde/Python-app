@@ -18,13 +18,13 @@ pipeline {
                 sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
             }
         }
-        // stage("Deploy"){
-        //     steps {
-        //         echo "Deploying the container"
-        //         sh "docker-compose down && docker-compose up -d"
+        stage("Deploy"){
+            steps {
+                echo "Deploying the container"
+                sh "docker-compose down && docker-compose up -d"
                 
-        //     }
-        // }
+            }
+        }
         
         stage("Push to Docker Hub"){
             steps {
