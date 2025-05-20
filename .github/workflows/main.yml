@@ -30,4 +30,4 @@ jobs:
     - name: Run Python Application
       run: |
          gunicorn --bind 0.0.0.0:7000 todo_app:app &
-         sleep 100
+         sleep 20
