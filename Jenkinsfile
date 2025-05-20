@@ -1,32 +1,34 @@
 pipeline {
     agent any 
+
     environment {
-        IMAGE_NAME = "rajatrokde9/python-app" // Replace with your actual DockerHub repo name
+        IMAGE_NAME = "rajatrokde9/python-app"
         IMAGE_TAG = "v2"
     }
-   stages{
-        stage("Clone Code"){
+
+    stages {
+        stage("Clone Code") {
             steps {
                 echo "Cloning the code"
-                git url:"https://github.com/rajatrokde/Python-app.git", branch: "main"
+                git url: "https://github.com/rajatrokde/Python-app.git", branch: "main"
             }
-        
         }
-        stage("Build"){
+
+        stage("Build") {
             steps {
                 echo "Building the image"
                 sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
             }
         }
-        stage("Deploy"){
+
+        stage("Deploy") {
             steps {
                 echo "Deploying the container"
                 sh "docker-compose down && docker-compose up -d"
-                
             }
         }
-        
-        stage("Push to Docker Hub"){
+
+         stage("Push to Docker Hub"){
             steps {
                 echo "Pushing the image to docker hub"
                     withCredentials([usernamePassword(credentialsId: "DockerHubcred", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
@@ -36,7 +38,6 @@ pipeline {
                     
                 }
             }
+        }
     }
-    
-}
 }
