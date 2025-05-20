@@ -29,5 +29,7 @@ jobs:
 
     - name: Run Python Application
       run: |
-        python todo_app.py &
-        sleep 10
+        # python todo_app.py &
+        # sleep 10
+         gunicorn --bind 0.0.0.0:7000 todo_app:app &
+         sleep 100
