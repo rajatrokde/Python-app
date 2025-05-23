@@ -1,3 +1,40 @@
+# name: Docker CI/CD
+
+# on:
+#   push:
+#     branches:
+#       - main
+#       # - dev
+
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v1
+#         with:
+#           username: ${{ secrets.DOCKER_USERNAME }}
+#           password: ${{ secrets.DOCKER_PASSWORD }}
+
+#       - name: Set IMAGE_NAME environment variable
+#         run: echo "IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:github" >> $GITHUB_ENV
+
+#       - name: Build Docker image
+#         run: docker build -t $IMAGE_NAME .
+
+#       - name: Push Docker image
+#         run: docker push $IMAGE_NAME
+
+#       - name: Stop and remove existing container if it exists
+#         run: docker rm -f todo_app_container || true
+
+#       - name: Run Docker container
+#         run: docker run -d -p 7000:7000 --name todo_app_container $IMAGE_NAME
+
 name: Docker CI/CD
 
 on:
@@ -34,3 +71,9 @@ jobs:
 
       - name: Run Docker container
         run: docker run -d -p 7000:7000 --name todo_app_container $IMAGE_NAME
+
+      - name: Wait for app to start and check health
+        run: |
+          sleep 10
+          curl --fail http://localhost:7000 || (echo "App failed to start" && docker logs todo_app_container && exit 1)
+
