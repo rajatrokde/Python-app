@@ -25,5 +25,7 @@ jobs:
           IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:github
           docker build -t $IMAGE_NAME .
           docker push $IMAGE_NAME
+      - name: Build & Run Docker container
+        run: docker run -d -p 7000:7000 --name todo_app_container $IMAGE_NAME
 
       
