@@ -10,7 +10,7 @@ on:
 
 jobs:
   deploy_and_run:
-    runs-on: [self-hosted, linux]
+    runs-on: [self-hosted, linux,local ]
 
     steps:
     - name: Checkout Repository
