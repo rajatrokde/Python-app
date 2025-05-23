@@ -1,8 +1,6 @@
 # 📝 Flask ToDo App
 
-A simple web-based ToDo list app built with Python and Flask.
-
----
+A simple web-based ToDo list app built with Python and Flask app 
 
 ## 🚀 Features
 
