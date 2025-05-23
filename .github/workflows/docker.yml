@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      #- dev
+      # - dev
 
 jobs:
   build-and-deploy:
@@ -20,12 +20,17 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image
-        run: |
-          IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:github
-          docker build -t $IMAGE_NAME .
-          docker push $IMAGE_NAME
-      - name: Build & Run Docker container
-        run: docker run -d -p 7000:7000 --name todo_app_container $IMAGE_NAME
+      - name: Set IMAGE_NAME environment variable
+        run: echo "IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:github" >> $GITHUB_ENV
 
-      
+      - name: Build Docker image
+        run: docker build -t $IMAGE_NAME .
+
+      - name: Push Docker image
+        run: docker push $IMAGE_NAME
+
+      - name: Stop and remove existing container if it exists
+        run: docker rm -f todo_app_container || true
+
+      - name: Run Docker container
+        run: docker run -d -p 7000:7000 --name todo_app_container $IMAGE_NAME
