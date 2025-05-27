@@ -10,7 +10,7 @@ pipeline {
         stage("Clone Code") {
             steps {
                 echo "Cloning the code"
-                git url: "https://github.com/rajatrokde/Python-app.git", branch: "main"
+                git url: "https://github.com/rajatrokde/Python-app.git", branch: "main" 
             }
         }
 
