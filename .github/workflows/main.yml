@@ -28,7 +28,11 @@ jobs:
         pip install -r requirements.txt
         pip install gunicorn  # Add only if needed and not in requirements.txt
 
+    # - name: Run Python Application
+    #   run: |
+    #      gunicorn --bind 0.0.0.0:7000 todo_app:app &
+    #      sleep 20
     - name: Run Python Application
       run: |
-         gunicorn --bind 0.0.0.0:7000 todo_app:app &
-         sleep 20
+        python todo_app.py &
+        sleep 100
