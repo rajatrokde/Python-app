@@ -1,15 +1,13 @@
+---
 name: Docker CI/CD
-
 on:
   push:
     branches:
       - main
-
 jobs:
   build:
-    runs-on: [self-hosted, linux, local]
-    outputs:
-      image_name: ${{ steps.set-image-name.outputs.image_name }}
+     runs-on: [self-hosted, linux, local]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -20,22 +18,62 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Set IMAGE_NAME
-        id: set-image-name
-        run: echo "image_name=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:github" >> $GITHUB_OUTPUT
+      - name: Set IMAGE_NAME environment variable
+        run: echo "IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:github" >> $GITHUB_ENV
 
       - name: Build Docker image
-        run: docker build -t ${{ steps.set-image-name.outputs.image_name }} .
+        run: docker build -t $IMAGE_NAME .
 
       - name: Push Docker image
-        run: docker push ${{ steps.set-image-name.outputs.image_name }}
+        run: docker push $IMAGE_NAME
 
-  deploy:
-    runs-on: [self-hosted, linux, local]
-    needs: build
-    steps:
-      - name: Stop and remove existing container (if any)
+      - name: Stop and remove existing container if it exists
         run: docker rm -f todo_app_container || true
-
+deploy:
+    runs-on: [self-hosted, linux, local]
       - name: Run Docker container
-        run: docker run -d -p 7000:7000 --name todo_app_container ${{ needs.build.outputs.image_name }}
+        run: docker run -d -p 7000:7000 --name todo_app_container $IMAGE_NAME
+
+
+
+# name: Docker CI/CD
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build:
+#     runs-on: [self-hosted, linux, local]
+#     outputs:
+#       image_name: ${{ steps.set-image-name.outputs.image_name }}
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v1
+#         with:
+#           username: ${{ secrets.DOCKER_USERNAME }}
+#           password: ${{ secrets.DOCKER_PASSWORD }}
+
+#       - name: Set IMAGE_NAME
+#         id: set-image-name
+#         run: echo "image_name=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:github" >> $GITHUB_OUTPUT
+
+#       - name: Build Docker image
+#         run: docker build -t ${{ steps.set-image-name.outputs.image_name }} .
+
+#       - name: Push Docker image
+#         run: docker push ${{ steps.set-image-name.outputs.image_name }}
+
+#   deploy:
+#     runs-on: [self-hosted, linux, local]
+#     needs: build
+#     steps:
+#       - name: Stop and remove existing container (if any)
+#         run: docker rm -f todo_app_container || true
+
+#       - name: Run Docker container
+#         run: docker run -d -p 7000:7000 --name todo_app_container ${{ needs.build.outputs.image_name }}
