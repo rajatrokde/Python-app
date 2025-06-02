@@ -1,7 +1,8 @@
 pipeline {
     agent any 
+   
     environment {
-        IMAGE_NAME = "rajatrokde9/python-app" // Replace with your actual DockerHub repo name
+        IMAGE_NAME = "rajatrokde9/python-app" 
         IMAGE_TAG = "v2"
     }
    stages{
@@ -30,7 +31,7 @@ pipeline {
             steps {
                 echo "Pushing the image to docker hub"
                     withCredentials([usernamePassword(credentialsId: "DockerHubcred", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
-                    bat "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${env.dockerHubUser}:${IMAGE_TAG} "
+                    bat "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${env.dockerHubUser}/${IMAGE_NAME}:${IMAGE_TAG} "
                     bat "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
                     bat "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
                     
