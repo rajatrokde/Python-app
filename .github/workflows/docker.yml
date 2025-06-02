@@ -24,8 +24,8 @@ on:
 #         run: |
 #           docker run -d -p 7000:7000 $IMAGE_NAME
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: [self-hosted, linux,local ]
 
     steps:
       - name: Checkout code
@@ -48,6 +48,7 @@ jobs:
 
       - name: Stop and remove existing container if it exists
         run: docker rm -f todo_app_container || true
-
+  deploy:
+   runs-on: [self-hosted, linux,local ]
       - name: Run Docker container
         run: docker run -d -p 7000:7000 --name todo_app_container $IMAGE_NAME
