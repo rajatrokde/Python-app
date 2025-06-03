@@ -21,22 +21,21 @@ pipeline {
             }
         }
 
-        stage("Deploy") {
+        stage("Push to Docker Hub"){
             steps {
-                echo "Deploying the container"
-                sh "docker-compose down && docker-compose up -d"
+                echo "Pushing the image to docker hub"
+                withCredentials([usernamePassword(credentialsId: "DockerHubcred", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
+                    sh "docker login -u ${dockerHubUser} -p ${dockerHubPass}"
+                    sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${dockerHubUser}/${IMAGE_NAME.split('/')[1]}:${IMAGE_TAG}"
+                    sh "docker push ${dockerHubUser}/${IMAGE_NAME.split('/')[1]}:${IMAGE_TAG}"
+                }
             }
         }
 
-         stage("Push to Docker Hub"){
+        stage("Deploy") {
             steps {
-                echo "Pushing the image to docker hub"
-                    withCredentials([usernamePassword(credentialsId: "DockerHubcred", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
-                    sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${env.dockerHubUser}:${IMAGE_TAG} "
-                    sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
-                    sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
-                    
-                }
+                echo "Deploying the container"
+                sh "docker-compose down && docker-compose pull && docker-compose up -d"
             }
         }
     }
