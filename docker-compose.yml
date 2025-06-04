@@ -1,8 +1,8 @@
-version: "3.3"
 services:
   web:
     image: rajatrokde9/python-app:v2dev
-    build:
-      context: .
+    build: .
     ports:
-      - 5000:5000
+      - "5000:5000"  
+    environment:
+      - FLASK_RUN_HOST=0.0.0.0
