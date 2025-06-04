@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   web:
-    image: rajatrokde9/python-app:v2dev
+    image: rajatrokde9/python-app:v2
     build:
       context: .
     ports:
