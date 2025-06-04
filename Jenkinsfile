@@ -26,8 +26,8 @@ pipeline {
                 echo "Pushing the image to docker hub"
                 withCredentials([usernamePassword(credentialsId: "DockerHubcred", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
                     bat "docker login -u ${dockerHubUser} -p ${dockerHubPass}"
-                    bat "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${dockerHubUser}/${IMAGE_NAME.split('/')[1]}:${IMAGE_TAG}"
-                    bat "docker push ${dockerHubUser}/${IMAGE_NAME.split('/')[1]}:${IMAGE_TAG}"
+                    bat "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${dockerHubUser}/:${IMAGE_TAG}"
+                    bat "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
