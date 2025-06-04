@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   web:
-    image: my-python-app
+    image: python-app
     build:
       context: .
     ports:
