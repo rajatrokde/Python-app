@@ -1,5 +1,6 @@
 pipeline {
     agent any
+
     environment {
         IMAGE_NAME = "rajatrokde9/python-app"
         IMAGE_TAG = "v2"
@@ -9,7 +10,7 @@ pipeline {
         stage("Clone Code") {
             steps {
                 echo "Cloning the code"
-                git url: "https://github.com/rajatrokde/Python-app.git", branch: "main" 
+                git url: "https://github.com/rajatrokde/Python-app.git", branch: "main"
             }
         }
 
@@ -20,13 +21,13 @@ pipeline {
             }
         }
 
-        stage("Push to Docker Hub"){
+        stage("Push to Docker Hub") {
             steps {
-                echo "Pushing the image to docker hub"
+                echo "Pushing the image to Docker Hub"
                 withCredentials([usernamePassword(credentialsId: "DockerHubcred", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
-                    sh "docker login -u ${dockerHubUser} -p ${dockerHubPass}"
-                   sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${dockerHubUser}:${IMAGE_TAG}"
-                   sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "echo ${dockerHubPass} | docker login -u ${dockerHubUser} --password-stdin"
+                    // Make sure to use fully qualified image name for push
+                    sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
