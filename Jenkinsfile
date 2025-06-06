@@ -1,5 +1,7 @@
 pipeline {
-    agent 'linux' 
+    agent {
+        label 'linux' 
+    } 
 
     environment {
         IMAGE_NAME = "rajatrokde9/python-app"
