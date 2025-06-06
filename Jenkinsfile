@@ -17,7 +17,7 @@ pipeline {
         stage("Build") {
             steps {
                 echo "Building the image"
-                 sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                 bat "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
             }
         }
 
@@ -25,9 +25,9 @@ pipeline {
             steps {
                 echo "Pushing the image to docker hub"
                 withCredentials([usernamePassword(credentialsId: "DockerHubcred", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
-                     sh "docker login -u ${dockerHubUser} -p ${dockerHubPass}"
-                     sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${dockerHubUser}/${IMAGE_NAME}:${IMAGE_TAG}"
-                    sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+                     bat "docker login -u ${dockerHubUser} -p ${dockerHubPass}"
+                     bat "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${dockerHubUser}/${IMAGE_NAME}:${IMAGE_TAG}"
+                    bat "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
@@ -37,7 +37,7 @@ pipeline {
                 echo "Deploying the container"
                
 
-                sh "docker-compose down && docker-compose pull && docker-compose up -d"
+                bat "docker-compose down && docker-compose pull && docker-compose up -d"
             }
         }
     }
