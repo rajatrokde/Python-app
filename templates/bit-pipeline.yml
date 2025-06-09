@@ -1,0 +1,43 @@
+pipelines:
+  branches:
+    main:
+      - step:
+          name: Testing
+          runs-on:
+            - self.hosted
+            - linux.shell
+          script:
+            - python3 -m venv venv
+            - source venv/bin/activate
+            - pip install -r requirements.txt
+            - pytest
+
+      - step:
+          name: Build and Push Docker Image
+          runs-on:
+            - self.hosted
+            - linux.shell
+          script:
+            - echo "Fixing Docker access"
+            - unset DOCKER_HOST
+            - docker --version
+            - docker build -t ${DOCKER_USERNAME,,}/${DOCKER_REPO,,}:bit .
+            - docker tag ${DOCKER_USERNAME}/${DOCKER_REPO}:bit ${DOCKER_USERNAME}/${DOCKER_REPO}:$BITBUCKET_COMMIT
+            - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+            - docker push ${DOCKER_USERNAME}/${DOCKER_REPO}:bit
+            - docker push ${DOCKER_USERNAME}/${DOCKER_REPO}:$BITBUCKET_COMMIT
+
+      - step:
+          name: Deploy to Server
+          runs-on:
+            - self.hosted
+            - linux.shell
+          script:
+            - echo "Starting deployment..."
+            - unset DOCKER_HOST
+            - CONTAINER_NAME=${DOCKER_REPO}
+            - docker stop "$CONTAINER_NAME" || true
+            - docker rm "$CONTAINER_NAME" || true
+            - docker pull "${DOCKER_USERNAME,,}/${DOCKER_REPO,,}:bit"
+            - docker run -d --name ${DOCKER_REPO} -p 80:80 ${DOCKER_USERNAME}/${DOCKER_REPO}:bit
+            - echo "Deployment complete"
