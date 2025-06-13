@@ -11,7 +11,7 @@ on:
       - dev
 jobs:
   deploy_and_run:
-    runs-on: [self-hosted, linux,local ]
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
