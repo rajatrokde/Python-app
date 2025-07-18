@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: python-app
-        image: rajatrokde9/python-app:v2
+        image: rajatrokde/python-app:v2
         ports:
         - containerPort: 7000
         env:
