@@ -28,7 +28,7 @@ metadata:
   name: python-app-service
   namespace: default
 spec:
-  type: NodePort    # <-- changed from NodePort to ClusterIP
+  type: ClusterIP   # <-- changed from NodePort to ClusterIP
   selector:
     app: python-app
   ports:
