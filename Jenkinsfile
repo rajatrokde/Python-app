@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "rajatrokde9/python-app"
+        IMAGE_NAME = "rajatrokde/python-app"
         IMAGE_TAG = "latest"
     }
 
