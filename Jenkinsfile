@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = "rajatrokde9/python-app"
-        IMAGE_TAG = "v2main"
+        IMAGE_TAG = "latest"
     }
 
     stages {
